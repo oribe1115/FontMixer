@@ -26,12 +26,12 @@ func (tm *tokenManager) getTokenFromFile() (*oauth2.Token, error) {
 		return nil, err
 	}
 
-	tok := &oauth2.Token{}
+	token := &oauth2.Token{}
 
-	err = json.NewDecoder(f).Decode(tok)
+	err = json.NewDecoder(f).Decode(token)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	return token, nil
 }

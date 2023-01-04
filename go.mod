@@ -3,6 +3,7 @@ module github.com/oribe1115/fontmixer
 go 1.19
 
 require (
+	github.com/google/go-cmp v0.5.8
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/oauth2 v0.4.0
