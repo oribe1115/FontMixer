@@ -2,3 +2,4 @@ logs/*
 
 /token.json
 /credentials.json
+/auth/credentials.json
