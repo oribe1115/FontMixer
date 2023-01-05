@@ -1,8 +1,28 @@
 package googleslides
 
 import (
+	"sync"
+	"testing"
+
+	"github.com/oribe1115/fontmixer/utils"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/api/slides/v1"
 )
+
+var exampleSlideMutex = &sync.Mutex{}
+
+func copiedExampleSlide(t *testing.T) *slides.Page {
+	t.Helper()
+
+	exampleSlideMutex.Lock()
+	defer exampleSlideMutex.Unlock()
+
+	dst := &slides.Page{}
+	err := utils.DeepCopyAsJson(exampleSlide, dst)
+	require.NoError(t, err)
+
+	return dst
+}
 
 // 実際の取得例をベースに、関係ない箇所を消して整理したもの
 var exampleSlide = &slides.Page{
