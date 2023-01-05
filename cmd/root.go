@@ -4,10 +4,14 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 
+	"github.com/oribe1115/fontmixer/auth"
 	"github.com/spf13/cobra"
+	"google.golang.org/api/option"
+	"google.golang.org/api/slides/v1"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -28,6 +32,34 @@ to quickly create a Cobra application.`,
 
 func run(cmd *cobra.Command, args []string) error {
 	fmt.Println("called")
+
+	ctx := context.Background()
+	client, err := auth.GetClient(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get client: %w", err)
+	}
+
+	srv, err := slides.NewService(ctx, option.WithHTTPClient(client))
+	if err != nil {
+		return fmt.Errorf("failed to get service: %w", err)
+	}
+
+	// テスト用のコード
+
+	// Prints the number of slides and elements in a sample presentation:
+	// https://docs.google.com/presentation/d/1EAYk18WDjIG-zp_0vLm3CsfQh_i8eXc67Jo2O9C6Vuc/edit
+	presentationId := "1EAYk18WDjIG-zp_0vLm3CsfQh_i8eXc67Jo2O9C6Vuc"
+	presentation, err := srv.Presentations.Get(presentationId).Do()
+	if err != nil {
+		return fmt.Errorf("unable to retrieve data from presentation: %v", err)
+	}
+
+	fmt.Printf("The presentation contains %d slides:\n", len(presentation.Slides))
+	for i, slide := range presentation.Slides {
+		fmt.Printf("- Slide #%d contains %d elements.\n", (i + 1),
+			len(slide.PageElements))
+	}
+
 	return nil
 }
 
