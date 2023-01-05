@@ -30,3 +30,7 @@ func SetupGoogleSlides(ctx context.Context, client *http.Client, presentationID 
 		presentation: presentation,
 	}, nil
 }
+
+func (gs *GoogleSlides) GetPresentationTitle() string {
+	return gs.presentation.Title
+}

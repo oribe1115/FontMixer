@@ -31,8 +31,6 @@ to quickly create a Cobra application.`,
 }
 
 func run(cmd *cobra.Command, args []string) error {
-	fmt.Println("called")
-
 	ctx := context.Background()
 	client, err := auth.GetClient(ctx)
 	if err != nil {
@@ -44,10 +42,12 @@ func run(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get presentation ID: %w", err)
 	}
 
-	googlseSlides, err := googleslides.SetupGoogleSlides(ctx, client, presentationID)
+	gs, err := googleslides.SetupGoogleSlides(ctx, client, presentationID)
 	if err != nil {
 		return fmt.Errorf("failed to setup Google Slides: %w", err)
 	}
+
+	fmt.Println("Presentation Title: ", gs.GetPresentationTitle())
 
 	return nil
 }
