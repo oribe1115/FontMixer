@@ -6,7 +6,7 @@ import (
 )
 
 // TODO: よりわかりやすい書き方に変える
-var regAlphaNumeric = regexp.MustCompile(`[0-9a-zA-Z',\.\-\_\(\)":%&!\?][0-9a-zA-Z',\.\-\_\(\)":%&!\?\s]*[0-9a-zA-Z',\.\-\_\(\)":%&!\?]??`)
+var regAlphaNumeric = regexp.MustCompile(`[0-9a-zA-Z',\.\-\_\(\)":%&!\?][0-9a-zA-Z',\.\-\_\(\)":%&!\? ]*[0-9a-zA-Z',\.\-\_\(\)":%&!\?]??`)
 
 // AlphaNumeric 英数字と主要な記号の箇所の範囲のindexを返す
 // 各要素は [startIndex, endIndex)

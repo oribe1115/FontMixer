@@ -39,7 +39,7 @@ func TestAlphaNumeric(t *testing.T) {
 			s:    "I'm aあの その Ok\n",
 			want: [][]int{
 				{0, 5},
-				{11, 14},
+				{11, 13},
 			},
 		},
 	}
