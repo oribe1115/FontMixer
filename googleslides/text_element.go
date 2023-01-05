@@ -7,6 +7,17 @@ type textElementWithObjectID struct {
 	TextElement *slides.TextElement
 }
 
+// extractValidTextElementFromPresentation Presentation全体からテキスト実体を含むTextElementを抽出する
+func extractValidTextElementFromPresentation(presentation *slides.Presentation) []*textElementWithObjectID {
+	list := make([]*textElementWithObjectID, 0)
+
+	for _, slide := range presentation.Slides {
+		list = append(list, extractValidTextElementFromSlide(slide)...)
+	}
+
+	return list
+}
+
 // extractValidTextElementFromSlide スライドからテキスト実体を含むTextElementを抽出する
 // TODO: 表中のテキストにも対応する
 func extractValidTextElementFromSlide(slide *slides.Page) []*textElementWithObjectID {
