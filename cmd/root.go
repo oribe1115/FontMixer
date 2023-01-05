@@ -49,9 +49,9 @@ func run(cmd *cobra.Command, args []string) error {
 
 	fmt.Println("Presentation Title: ", gs.GetPresentationTitle())
 
-	err = gs.MakeAllTextsBold()
+	err = gs.RequestAlphaNumericFontUpdate()
 	if err != nil {
-		return fmt.Errorf("failed to bold all: %w", err)
+		return fmt.Errorf("failed to update alphanumeric font: %w", err)
 	}
 
 	return nil
