@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/manifoldco/promptui"
 	"github.com/oribe1115/fontmixer/auth"
 	"github.com/spf13/cobra"
 	"google.golang.org/api/option"
@@ -44,12 +45,14 @@ func run(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get service: %w", err)
 	}
 
+	presentationID, err := getPresentationID()
+	if err != nil {
+		return fmt.Errorf("failed to get presentation ID: %w", err)
+	}
+
 	// テスト用のコード
 
-	// Prints the number of slides and elements in a sample presentation:
-	// https://docs.google.com/presentation/d/1EAYk18WDjIG-zp_0vLm3CsfQh_i8eXc67Jo2O9C6Vuc/edit
-	presentationId := "1EAYk18WDjIG-zp_0vLm3CsfQh_i8eXc67Jo2O9C6Vuc"
-	presentation, err := srv.Presentations.Get(presentationId).Do()
+	presentation, err := srv.Presentations.Get(presentationID).Do()
 	if err != nil {
 		return fmt.Errorf("unable to retrieve data from presentation: %v", err)
 	}
@@ -61,6 +64,27 @@ func run(cmd *cobra.Command, args []string) error {
 	}
 
 	return nil
+}
+
+func getPresentationID() (string, error) {
+	validate := func(input string) error {
+		if len(input) == 0 {
+			return fmt.Errorf("presentation ID is required")
+		}
+		return nil
+	}
+
+	prompt := promptui.Prompt{
+		Label:    "Presentation ID",
+		Validate: validate,
+	}
+
+	presentationID, err := prompt.Run()
+	if err != nil {
+		return "", err
+	}
+
+	return presentationID, nil
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
