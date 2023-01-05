@@ -1,6 +1,9 @@
 package googleslides
 
-import "google.golang.org/api/slides/v1"
+import (
+	"github.com/oribe1115/fontmixer/extractor"
+	"google.golang.org/api/slides/v1"
+)
 
 type textElementWithObjectID struct {
 	ObjectID    string
@@ -45,4 +48,25 @@ func extractValidTextElementFromSlide(slide *slides.Page) []*textElementWithObje
 	}
 
 	return list
+}
+
+func (te *textElementWithObjectID) genRangesForAlphaNumericSubString() []*slides.Range {
+	ranges := extractor.AlphaNumeric(te.TextElement.TextRun.Content)
+
+	fixedRanges := make([]*slides.Range, 0)
+
+	for _, r := range ranges {
+		startIndex := te.TextElement.StartIndex + int64(r[0])
+		endIndex := te.TextElement.StartIndex + int64(r[1])
+
+		fixedRange := &slides.Range{
+			StartIndex: &startIndex,
+			EndIndex:   &endIndex,
+			Type:       "FIXED_RANGE",
+		}
+
+		fixedRanges = append(fixedRanges, fixedRange)
+	}
+
+	return fixedRanges
 }
