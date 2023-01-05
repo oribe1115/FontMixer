@@ -38,13 +38,16 @@ func (gs *GoogleSlides) GetPresentationTitle() string {
 }
 
 func (gs *GoogleSlides) RequestAlphaNumericFontUpdate(fontFamily string) error {
-	requests := genUpdateAlphaNumericFontRequest(gs.presentation, fontFamily)
+	requests, err := genUpdateAlphaNumericFontRequest(gs.presentation, fontFamily)
+	if err != nil {
+		return err
+	}
 
 	batchUpdatePresentationRequest := &slides.BatchUpdatePresentationRequest{
 		Requests: requests,
 	}
 
-	_, err := gs.service.Presentations.BatchUpdate(gs.presentationID, batchUpdatePresentationRequest).Do()
+	_, err = gs.service.Presentations.BatchUpdate(gs.presentationID, batchUpdatePresentationRequest).Do()
 	if err != nil {
 		return err
 	}
