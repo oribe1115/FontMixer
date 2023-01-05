@@ -34,13 +34,19 @@ func TestAlphaNumeric(t *testing.T) {
 				{8, 14},
 			},
 		},
+		{
+			name: "Include spaces",
+			s:    "I'm aあの その Ok\n",
+			want: [][]int{
+				{0, 5},
+				{11, 14},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := AlphaNumeric(tt.s)
 			if diff := cmp.Diff(tt.want, got); diff != "" {
-				r := got[1]
-				t.Log(tt.s[r[0]:r[1]])
 				t.Errorf("AlphaNumeric() mismatch (-want +got):\n%s", diff)
 			}
 		})
