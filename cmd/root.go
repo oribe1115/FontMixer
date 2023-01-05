@@ -10,9 +10,8 @@ import (
 
 	"github.com/manifoldco/promptui"
 	"github.com/oribe1115/fontmixer/auth"
+	"github.com/oribe1115/fontmixer/googleslides"
 	"github.com/spf13/cobra"
-	"google.golang.org/api/option"
-	"google.golang.org/api/slides/v1"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -40,27 +39,14 @@ func run(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get client: %w", err)
 	}
 
-	srv, err := slides.NewService(ctx, option.WithHTTPClient(client))
-	if err != nil {
-		return fmt.Errorf("failed to get service: %w", err)
-	}
-
 	presentationID, err := getPresentationID()
 	if err != nil {
 		return fmt.Errorf("failed to get presentation ID: %w", err)
 	}
 
-	// テスト用のコード
-
-	presentation, err := srv.Presentations.Get(presentationID).Do()
+	googlseSlides, err := googleslides.SetupGoogleSlides(ctx, client, presentationID)
 	if err != nil {
-		return fmt.Errorf("unable to retrieve data from presentation: %v", err)
-	}
-
-	fmt.Printf("The presentation contains %d slides:\n", len(presentation.Slides))
-	for i, slide := range presentation.Slides {
-		fmt.Printf("- Slide #%d contains %d elements.\n", (i + 1),
-			len(slide.PageElements))
+		return fmt.Errorf("failed to setup Google Slides: %w", err)
 	}
 
 	return nil
