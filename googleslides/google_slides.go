@@ -37,8 +37,8 @@ func (gs *GoogleSlides) GetPresentationTitle() string {
 	return gs.presentation.Title
 }
 
-func (gs *GoogleSlides) RequestAlphaNumericFontUpdate() error {
-	requests := genUpdateAlphaNumericFontRequest(gs.presentation)
+func (gs *GoogleSlides) RequestAlphaNumericFontUpdate(fontFamily string) error {
+	requests := genUpdateAlphaNumericFontRequest(gs.presentation, fontFamily)
 
 	batchUpdatePresentationRequest := &slides.BatchUpdatePresentationRequest{
 		Requests: requests,

@@ -2,7 +2,11 @@ package googleslides
 
 import "google.golang.org/api/slides/v1"
 
-func genUpdateAlphaNumericFontRequest(presentation *slides.Presentation) []*slides.Request {
+var AvailableFontFamily = []string{
+	"Arial",
+}
+
+func genUpdateAlphaNumericFontRequest(presentation *slides.Presentation, fontFamily string) []*slides.Request {
 	requests := make([]*slides.Request, 0)
 
 	textElements := extractValidTextElementFromPresentation(presentation)
@@ -13,8 +17,10 @@ func genUpdateAlphaNumericFontRequest(presentation *slides.Presentation) []*slid
 				UpdateTextStyle: &slides.UpdateTextStyleRequest{
 					ObjectId: te.ObjectID,
 					Style: &slides.TextStyle{
-						// TODO: フォントを変更するようにする
-						Bold: true,
+						FontFamily: fontFamily,
+						WeightedFontFamily: &slides.WeightedFontFamily{
+							FontFamily: fontFamily,
+						},
 					},
 					TextRange: targetRange,
 					Fields:    "*",

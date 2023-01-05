@@ -49,10 +49,17 @@ func run(cmd *cobra.Command, args []string) error {
 
 	fmt.Println("Presentation Title: ", gs.GetPresentationTitle())
 
-	err = gs.RequestAlphaNumericFontUpdate()
+	fontFamily, err := selectFontFamily()
+	if err != nil {
+		return fmt.Errorf("failed to get font family: %w", err)
+	}
+
+	err = gs.RequestAlphaNumericFontUpdate(fontFamily)
 	if err != nil {
 		return fmt.Errorf("failed to update alphanumeric font: %w", err)
 	}
+
+	fmt.Println("Success to update")
 
 	return nil
 }
@@ -76,6 +83,20 @@ func getPresentationID() (string, error) {
 	}
 
 	return presentationID, nil
+}
+
+func selectFontFamily() (string, error) {
+	prompt := promptui.Select{
+		Label: "Font family",
+		Items: googleslides.AvailableFontFamily,
+	}
+
+	_, fontFamily, err := prompt.Run()
+	if err != nil {
+		return "", err
+	}
+
+	return fontFamily, nil
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
