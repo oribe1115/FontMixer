@@ -22,7 +22,11 @@ func GetClient(ctx context.Context) (*http.Client, error) {
 	tm := newTokenManager()
 	token, err := tm.getTokenFromFile()
 	if err != nil {
-		// TODO get token from web
+		token, err = tm.getTokenWithAuth(ctx, config)
+		if err != nil {
+			return nil, fmt.Errorf("failed to getTokenWithAuth: %w", err)
+		}
+
 		err := tm.saveToken(token)
 		if err != nil {
 			return nil, fmt.Errorf("failed to save token: %w", err)
