@@ -22,6 +22,11 @@ func genUpdateAlphaNumericFontRequest(presentation *slides.Presentation, fontFam
 				return nil, err
 			}
 
+			newTextStyle.FontFamily = fontFamily
+			if newTextStyle.WeightedFontFamily != nil {
+				newTextStyle.WeightedFontFamily.FontFamily = fontFamily
+			}
+
 			request := &slides.Request{
 				UpdateTextStyle: &slides.UpdateTextStyleRequest{
 					ObjectId:  te.ObjectID,

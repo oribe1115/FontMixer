@@ -43,6 +43,8 @@ func (gs *GoogleSlides) RequestAlphaNumericFontUpdate(fontFamily string) error {
 		return err
 	}
 
+	fmt.Printf("Request count: %d\n", len(requests))
+
 	batchUpdatePresentationRequest := &slides.BatchUpdatePresentationRequest{
 		Requests: requests,
 	}
